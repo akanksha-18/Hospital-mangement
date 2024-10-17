@@ -62,7 +62,7 @@ describe('Appointment Tests', () => {
         const response = await request(app)
             .post('/api/appointments/book')
             .set('Authorization', `Bearer ${token}`)
-            .send({ doctorId: doctor._id, slot: '2024-10-15T10:00:00Z', symptoms: 'Headache' }); 
+            .send({ doctorId: doctor._id, slot: '2024-10-18T10:00:00Z', symptoms: 'Headache' }); 
 
         expect(response.status).toBe(201);
         expect(response.body.message).toBe('Appointment booked successfully.');
@@ -80,7 +80,7 @@ describe('Appointment Tests', () => {
         await Appointment.create({
             doctor: doctor._id,
             patient: patient._id,
-            date: '2024-10-15T10:00:00Z',
+            date: '2024-10-18T10:00:00Z',
             symptoms, 
             status: 'pending'
         });
@@ -106,7 +106,7 @@ describe('Appointment Tests', () => {
         const appointment = await Appointment.create({
             doctor: doctor._id,
             patient: patient._id,
-            date: '2024-10-15T10:00:00Z',
+            date: '2024-10-18T10:00:00Z',
             symptoms: 'Sore throat',
             status: 'pending'
         });
@@ -132,7 +132,7 @@ describe('Appointment Tests', () => {
         await Appointment.create({
             doctor: doctor._id,
             patient: patient._id,
-            date: '2024-10-15T10:00:00Z',
+            date: '2024-10-18T10:00:00Z',
             symptoms: 'Back pain', 
             status: 'pending'
         });
@@ -140,7 +140,7 @@ describe('Appointment Tests', () => {
         const response = await request(app)
             .get('/api/appointments/available')
             .set('Authorization', `Bearer ${token}`)
-            .query({ doctorId: doctor._id.toString(), date: '2024-10-15' }); 
+            .query({ doctorId: doctor._id.toString(), date: '2024-10-18' }); 
 
         expect(response.status).toBe(200);
         expect(Array.isArray(response.body)).toBe(true);
@@ -159,7 +159,7 @@ describe('Appointment Tests', () => {
         const appointment = await Appointment.create({
             doctor: doctor._id,
             patient: patient._id,
-            date: '2024-10-15T10:00:00Z',
+            date: '2024-10-18T10:00:00Z',
             symptoms: 'Cough',
             status: 'pending'
         });
@@ -204,7 +204,7 @@ describe('Appointment Tests', () => {
         const appointment = await Appointment.create({
             doctor: doctor._id,
             patient: patient._id,
-            date: '2024-10-15T10:00:00Z',
+            date: '2024-10-18T10:00:00Z',
             symptoms: 'Test symptoms',
             status: 'pending'
         });

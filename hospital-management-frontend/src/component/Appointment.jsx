@@ -46,7 +46,7 @@ function Appointment() {
 
     try {
       const utcDate = new Date(selectedDate.getTime() - selectedDate.getTimezoneOffset() * 60000);
-      const response = await axios.post('http://localhost:4000/api/appointments/book', {
+      await axios.post('http://localhost:4000/api/appointments/book', {
         doctorId: doctorId,
         slot: utcDate.toISOString(),
         symptoms: symptoms 

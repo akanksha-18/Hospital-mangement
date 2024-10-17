@@ -1,12 +1,15 @@
 import { useState } from 'react';
+import {useNavigate} from 'react-router-dom'
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Register() {
+  const navigate=useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
 
   const validateEmail = (email) => {
     const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(com|in)$/;
@@ -38,7 +41,8 @@ function Register() {
     }
 
     try {
-      const response = await axios.post('http://localhost:4000/api/users/register', { 
+       await axios.post('http://localhost:4000/api/users/register', 
+        { 
         name, 
         email, 
         password, 
@@ -50,9 +54,10 @@ function Register() {
       setPassword('');
       
       toast.success('Registered successfully! Redirecting to login...');
-      
+
       setTimeout(() => {
-        window.location.href = '/login'; 
+        // window.location.href = '/login'; 
+        navigate('/login');
       }, 2000);
     } catch (err) {
       const errorMessage = err.response?.data?.error || 'Registration failed. Please try again.';
@@ -91,7 +96,7 @@ function Register() {
         <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition">Register</button>
         
         <p className="text-center text-gray-600">
-          Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login here</a>
+          Already have an account? <a href="/login" className="tSext-blue-500 hover:underline">Login here</a>
         </p>
       </form>
     </div>

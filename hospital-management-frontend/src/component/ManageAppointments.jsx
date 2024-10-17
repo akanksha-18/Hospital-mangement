@@ -1,26 +1,27 @@
-
-
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function ManageAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [error, setError] = useState('');
   const navigate = useNavigate();
   const userRole = localStorage.getItem('role');
+
   useEffect(() => {
     if (userRole !== 'doctor' && userRole !== 'super_admin') {
-      navigate('/'); 
+      navigate('/');
       return;
     }
 
     const fetchAppointments = async () => {
       const token = localStorage.getItem('token');
       try {
-        const endpoint = userRole === 'super_admin' 
+        const endpoint = userRole === 'super_admin'
           ? 'http://localhost:4000/api/appointments/all'
-          : 'http://localhost:4000/api/appointments/doctor'; 
+          : 'http://localhost:4000/api/appointments/doctor';
 
         const res = await axios.get(endpoint, {
           headers: { Authorization: `Bearer ${token}` }
@@ -30,8 +31,10 @@ function ManageAppointments() {
         console.error('Error fetching appointments', err);
         if (err.response && err.response.status === 403) {
           setError('Access denied. You are not allowed to view this information.');
+          toast.error('Access denied. You are not allowed to view this information.');
         } else {
           setError('Unable to fetch appointments. Please try again later.');
+          toast.error('Unable to fetch appointments. Please try again later.');
         }
       }
     };
@@ -48,10 +51,10 @@ function ManageAppointments() {
       setAppointments(appointments.map(app => 
         app._id === id ? { ...app, status } : app
       ));
-      alert('Appointment updated successfully!');
+      toast.success('Appointment updated successfully!');
     } catch (err) {
       console.error('Error updating appointment', err);
-      alert('Error updating appointment. Please try again.');
+      toast.error('Error updating appointment. Please try again.');
     }
   };
 
@@ -62,10 +65,10 @@ function ManageAppointments() {
         headers: { Authorization: `Bearer ${token}` }
       });
       setAppointments(appointments.filter(app => app._id !== id));
-      alert('Appointment deleted successfully!');
+      toast.success('Appointment deleted successfully!');
     } catch (err) {
       console.error('Error deleting appointment', err);
-      alert('Error deleting appointment. Please try again.');
+      toast.error('Error deleting appointment. Please try again.');
     }
   };
 
@@ -78,7 +81,7 @@ function ManageAppointments() {
       hour: '2-digit', 
       minute: '2-digit', 
       hour12: true,
-      timeZone: 'UTC'  
+      timeZone: 'UTC'
     };
     return date.toLocaleString('en-US', options);
   };
@@ -122,11 +125,11 @@ function ManageAppointments() {
                   </button>
                 </div>
               )}
-  
+
               {isDateExpired(appointment.date) && (
                 <p className="text-gray-500 mt-2">This appointment has expired.</p>
               )}
-  
+
               {userRole === 'super_admin' && (
                 <button 
                   onClick={() => handleDeleteAppointment(appointment._id)}
@@ -141,9 +144,9 @@ function ManageAppointments() {
       ) : (
         !error && <p>No appointments found.</p>
       )}
+      <ToastContainer />
     </div>
   );
-  
 }
 
 export default ManageAppointments;

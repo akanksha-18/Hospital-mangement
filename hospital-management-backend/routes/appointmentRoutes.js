@@ -129,46 +129,9 @@ router.get('/available', authenticate, async (req, res) => {
     }
 });
 
-// router.get('/available', authenticate, async (req, res) => {
-//     const { doctorId, date } = req.query;
 
-//     try {
-//         const appointments = await Appointment.find({
-//             doctor: doctorId,
-//             date: {
-//                 $gte: new Date(date),
-//                 $lt: new Date(new Date(date).setDate(new Date(date).getDate() + 1))
-//             },
-//             // Fetch only confirmed and rejected appointments
-//             status: { $in: ['confirmed', 'rejected'] }
-//         });
 
-//         const allSlots = [];
-//         for (let hour = 9; hour < 17; hour++) {
-//             for (let min = 0; min < 60; min += 15) {
-//                 allSlots.push(new Date(date).setHours(hour, min, 0, 0).getTime());
-//             }
-//         }
 
-//         const bookedSlots = appointments
-//             .filter(app => app.status === 'confirmed')
-//             .map(app => new Date(app.date).getTime());
-
-//         // If an appointment is rejected, make the slot available
-//         const rejectedSlots = appointments
-//             .filter(app => app.status === 'rejected')
-//             .map(app => new Date(app.date).getTime());
-
-//         const availableSlots = allSlots.filter(slot => 
-//             !bookedSlots.includes(slot) || rejectedSlots.includes(slot)
-//         );
-
-//         res.json(availableSlots);
-//     } catch (err) {
-//         console.error('Error fetching available slots:', err);
-//         res.status(500).json({ error: 'Something went wrong' });
-//     }
-// });
 
 router.get('/patient', authenticate, async (req, res) => {
     try {
